@@ -1,0 +1,3 @@
+sqlalchemy
+pandas
+-r requirement-ci.txt
