@@ -40,8 +40,8 @@ class DatabaseWriter:
                 self.session.add(model)
                 self.session.commit()
 
-    def extend_model_member(self, model_member, **kwargs):
+    def extend_model_member(self, model_member, *args, **kwargs):
         raise NotImplementedError()
 
-    def is_exist(self, *args):
+    def is_exist(self, *args, **kwargs):
         raise NotImplementedError
