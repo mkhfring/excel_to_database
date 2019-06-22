@@ -13,9 +13,6 @@ class TestExcelReader:
         excel_reader = ExcelReader(path.join(HERE, 'assets/practice.xlsx'))
         data = excel_reader.read_excel_data()
         person = Person(name=data['نام'][0], family=data['نام خانوادگی'][0], national_id=data['کد ملی'][0])
-        my_dict = {'name': 'حسن', 'family': 'براتی', 'national_id': '4565767'}
-        person2 = Person(**my_dict)
-        dbsession.add(person2)
         dbsession.add(person)
         dbsession.commit()
         assert data is not None
@@ -23,4 +20,7 @@ class TestExcelReader:
 
         db_writer = DatabaseWriter(dbsession, data, Person)
         db_writer.write_data_to_db({'نام': 'name', 'نام خانوادگی': 'family', 'کد ملی': 'national_id'})
+        assert db_writer.get_final_result() is not None
+        assert db_writer.get_final_result()['status'] is not None
+        assert len(db_writer.get_final_result()['status']) > 1
 

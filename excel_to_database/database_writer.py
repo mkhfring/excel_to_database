@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import pandas as pd
 from excel_to_database.exeptions import ValidationException
 
@@ -40,9 +42,14 @@ class DatabaseWriter:
             if is_exist:
                 self.session.merge(model)
                 self.session.commit()
+                self.data['status'].append('Update')
             else:
                 self.session.add(model)
                 self.session.commit()
+                self.data['status'].append('Add')
+
+    def get_final_result(self):
+        return self.data
 
     def extend_model_member(self, model_member, *args, **kwargs):
         raise NotImplementedError()
