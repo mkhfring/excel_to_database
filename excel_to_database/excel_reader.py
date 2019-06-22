@@ -20,3 +20,4 @@ class ExcelReader:
 
     def validate_fields(self, data: dict):
         raise NotImplementedError()
+
