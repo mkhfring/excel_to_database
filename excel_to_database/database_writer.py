@@ -1,3 +1,4 @@
+import pandas as pd
 from excel_to_database.exeptions import ValidationException
 
 
@@ -21,15 +22,18 @@ class DatabaseWriter:
             ValidationException('Fields of excel file does not match the database model')
 
         for index, _ in enumerate(self.data[keys[0]]):
-            model_member = {translation[key]: self.data[key][index] for key in keys}
+            model_member = {
+                translation[key]: (self.data[key][index] if not pd.isnull(self.data[key][index]) else None)
+                for key in keys
+            }
             try:
                 extended_model_member = self.extend_model_member(model_member)
-            except NotImplementedError as e:
+            except NotImplementedError:
                 extended_model_member = model_member
 
             try:
                 is_exist = self.is_exist()
-            except NotImplementedError as e:
+            except NotImplementedError:
                 is_exist = False
 
             model = self.model(**extended_model_member)
