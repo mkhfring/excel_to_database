@@ -16,12 +16,9 @@ class DatabaseWriter:
             pass
 
         for index, _ in enumerate(self.data['کد ملی']):
-            is_exist = self.session.query(self.model).filter(
-                self.model.national_id == self.data['کد ملی'][index]
-            ).one_or_none()
-            model = self.model(
-
-            )
+            model_member = {translation[key]: self.data[key][index] for key in self.data.keys()}
+            is_exist = True
+            model = self.model(**model_member)
             if is_exist:
                 self.session.merge(model)
                 self.session.commit()
