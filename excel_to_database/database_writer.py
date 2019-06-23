@@ -10,6 +10,7 @@ class DatabaseWriter:
         self.session = session
         self.data = data
         self.model = model
+        self.status = []
 
     def write_data_to_db(self, translation: dict = None):
         translated_keys = None
@@ -25,7 +26,7 @@ class DatabaseWriter:
 
         for index, _ in enumerate(self.data[keys[0]]):
             model_member = {
-                translation[key]: (self.data[key][index] if not pd.isnull(self.data[key][index]) else None)
+                translation[key] if translation else key: (self.data[key][index] if not pd.isnull(self.data[key][index]) else None)
                 for key in keys
             }
             try:
@@ -42,13 +43,14 @@ class DatabaseWriter:
             if is_exist:
                 self.session.merge(model)
                 self.session.commit()
-                self.data['status'].append('Update')
+                self.status.append('Updated')
             else:
                 self.session.add(model)
                 self.session.commit()
-                self.data['status'].append('Add')
+                self.status.append('Added')
 
     def get_final_result(self):
+        self.data['status'] = self.status
         return self.data
 
     def extend_model_member(self, model_member, *args, **kwargs):
