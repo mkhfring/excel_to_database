@@ -22,7 +22,7 @@ class DatabaseWriter:
         database_fields = translated_keys or keys
 
         if not all(key in dir(self.model) for key in database_fields):
-            ValidationException('Fields of excel file does not match the database model')
+            raise ValidationException('Fields of excel file does not match the database model')
 
         for index, _ in enumerate(self.data[keys[0]]):
             model_member = {
