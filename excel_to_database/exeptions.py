@@ -6,5 +6,3 @@ class ValidationException(Exception):
             self.status = status
 
         super().__init__(self.status)
-
-

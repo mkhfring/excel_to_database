@@ -26,9 +26,15 @@ class DatabaseWriter:
 
         for index, _ in enumerate(self.data[keys[0]]):
             model_member = {
-                translation[key] if translation else key: (self.data[key][index] if not pd.isnull(self.data[key][index]) else None)
+                translation[key] if translation else key: (
+                    self.data[key][index] if not pd.isnull(self.data[key][index]) else None
+                )
                 for key in keys
             }
+            if self.is_invalid_in_model_member(model_member):
+                self.status.append('Failed')
+                continue
+
             try:
                 extended_model_member = self.extend_model_member(model_member)
             except NotImplementedError:
@@ -58,3 +64,12 @@ class DatabaseWriter:
 
     def is_exist(self, *args, **kwargs):
         raise NotImplementedError
+
+    @staticmethod
+    def is_invalid_in_model_member(model_member):
+        for value in model_member.values():
+            if value == 'Invalid':
+                return True
+
+        return False
+

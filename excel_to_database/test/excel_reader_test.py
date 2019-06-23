@@ -20,4 +20,3 @@ class TestExcelReader:
         assert db_writer.get_final_result() is not None
         assert db_writer.get_final_result()['status'] is not None
         assert len(db_writer.get_final_result()['status']) > 1
-
