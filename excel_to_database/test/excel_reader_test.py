@@ -11,7 +11,8 @@ class TestExcelReader:
 
     def test_excel_reader(self, dbsession):
         excel_reader = ExcelReader(path.join(HERE, 'assets/practice.xlsx'))
-        data = excel_reader.read_excel_data()
+        excel_reader.read_excel_data()
+        data = excel_reader.get_data
         assert data is not None
         assert 'نام' in data.keys()
         fields_translation = {'نام': 'name', 'نام خانوادگی': 'family', 'کد ملی': 'national_id'}
