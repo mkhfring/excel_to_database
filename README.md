@@ -32,7 +32,6 @@ pip install -r requirements.txt
 
 ### Prerequisites
 
-This project needs a connection to the account officer database. Other
 requirements for the project are listed in requirements.txt
 
 
