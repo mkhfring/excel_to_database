@@ -40,13 +40,13 @@ class DatabaseWriter:
                 raise ValidationException('Fields of excel file does not match the database model')
 
             # TODO: check hassattr to evoid this rediculous try/except
-            try:
-                is_extra_model_valid = self.validate_extended_model(extended_model_member)
-            except NotImplementedError as e:
-                raise e
 
             model = self.model(**extended_model_member)
-            existing_entity = self.get_user_if_exist(model)
+            try:
+                existing_entity = self.get_user_if_exist(model)
+            except NotImplementedError:
+                existing_entity = False
+
             if existing_entity:
                 try:
 
@@ -73,12 +73,7 @@ class DatabaseWriter:
 
                     self.session.add(model)
                     self.session.commit()
-
                     self.status.append('Added')
-                    if extended_model_member['peer_id'] is None:
-                        self.extra_info.append('The entry is not registered in bale')
-                    else:
-                        self.extra_info.append('Normal')
 
                 except IntegrityError as ie:
                     self.extra_info.append('The entry is already in database')
@@ -97,9 +92,6 @@ class DatabaseWriter:
         raise NotImplementedError()
 
     def get_user_if_exist(self, *args):
-        raise NotImplementedError
-
-    def validate_extended_model(self, extended_model):
         raise NotImplementedError
 
     @staticmethod

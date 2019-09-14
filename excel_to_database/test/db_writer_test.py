@@ -20,13 +20,13 @@ class TestDatabaseWriter:
         db_writer = DatabaseWriter(dbsession, DATA, Person)
         db_writer.write_data_to_db()
         assert db_writer.get_final_result() is not None
-        assert db_writer.get_final_result()['status'] is not None
-        assert len(db_writer.get_final_result()['status']) == 1
+        assert db_writer.get_final_result()['database status'] is not None
+        assert len(db_writer.get_final_result()['database status']) == 1
         db_writer_for_empty_field = DatabaseWriter(dbsession, DATA_WITH_EMPTY_FIELD, Person)
         db_writer_for_empty_field.write_data_to_db()
         assert db_writer_for_empty_field.get_final_result() is not None
-        assert db_writer_for_empty_field.get_final_result()['status'] is not None
-        assert db_writer_for_empty_field.get_final_result()['status'][0] == 'Added'
+        assert db_writer_for_empty_field.get_final_result()['database status'] is not None
+        assert db_writer_for_empty_field.get_final_result()['database status'][0] == 'Added'
         db_writer_for_invalid_field = DatabaseWriter(dbsession, DATA_WITH_INVALID_FIELDS, Person)
         db_writer_for_invalid_field.write_data_to_db()
-        assert db_writer_for_invalid_field.get_final_result()['status'][0] == 'Failed'
+        assert db_writer_for_invalid_field.get_final_result()['database status'][0] == 'Failed'
